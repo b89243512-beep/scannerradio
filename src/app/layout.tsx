@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     shortcut: "/icon.svg",
     apple: "/apple-icon.svg",
   },
-  verification: {},
+  verification: { google: "4MCq5dgRrRCdVMHgTZknV04N2LdRovQpBJzqMxSE-bI" },
   other: { "mobile-web-app-capable": "yes" },
   category: "news",
 };
