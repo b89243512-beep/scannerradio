@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, Square, ExternalLink, Radio, Users, MapPin, X as XIcon, AlertCircle, Zap } from "lucide-react";
+import { Play, Square, Users, MapPin, X as XIcon, Loader2, AlertCircle } from "lucide-react";
 import type { Feed } from "@/data/feeds";
-import { getBroadcastifyUrl } from "@/data/feeds";
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; label: string }> = {
   police: { bg: "bg-blue-500/15", text: "text-blue-400", label: "Police" },
@@ -19,82 +18,43 @@ interface Props {
   onClose: () => void;
 }
 
-type Mode = "native" | "iframe" | "popup";
+type State = "idle" | "loading" | "playing" | "error";
 
 export function AudioPlayer({ feed, onClose }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const popupRef = useRef<Window | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [mode, setMode] = useState<Mode>("native");
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<State>("idle");
 
   useEffect(() => {
-    setPlaying(false);
-    setError(null);
-    setMode(feed?.streamUrl ? "native" : "iframe");
-    if (popupRef.current && !popupRef.current.closed) popupRef.current.close();
-    popupRef.current = null;
-  }, [feed?.id, feed?.streamUrl]);
+    setState("idle");
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.removeAttribute("src");
+      audioRef.current.load();
+    }
+  }, [feed?.id]);
 
   useEffect(() => {
     return () => {
-      if (popupRef.current && !popupRef.current.closed) popupRef.current.close();
       if (audioRef.current) audioRef.current.pause();
     };
   }, []);
 
   if (!feed) return null;
-
   const catStyle = CATEGORY_COLORS[feed.category];
-  const embedUrl = `https://www.broadcastify.com/webPlayer/${feed.broadcastifyId}`;
-
-  const openInPopup = () => {
-    if (popupRef.current && !popupRef.current.closed) {
-      popupRef.current.focus();
-      return;
-    }
-    const w = 480, h = 320;
-    const left = typeof window !== "undefined" ? window.screenX + (window.outerWidth - w) / 2 : 0;
-    const top = typeof window !== "undefined" ? window.screenY + (window.outerHeight - h) / 2 : 0;
-    const popup = window.open(
-      embedUrl,
-      `scanner-${feed.id}`,
-      `width=${w},height=${h},left=${left},top=${top},menubar=no,toolbar=no`
-    );
-    if (popup) {
-      popupRef.current = popup;
-      setPlaying(true);
-      setMode("popup");
-    } else {
-      window.open(getBroadcastifyUrl(feed), "_blank", "noopener,noreferrer");
-    }
-  };
-
-  const stopAll = () => {
-    if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; }
-    if (popupRef.current && !popupRef.current.closed) popupRef.current.close();
-    popupRef.current = null;
-    setPlaying(false);
-  };
 
   const toggle = () => {
-    if (playing) {
-      stopAll();
+    const el = audioRef.current;
+    if (!el) return;
+    if (state === "playing" || state === "loading") {
+      el.pause();
+      el.removeAttribute("src");
+      el.load();
+      setState("idle");
       return;
     }
-    setError(null);
-    if (mode === "native" && feed.streamUrl) {
-      const el = audioRef.current;
-      if (el) {
-        el.src = feed.streamUrl;
-        el.play().then(() => setPlaying(true)).catch(() => {
-          setMode("iframe");
-          setPlaying(true);
-        });
-      }
-    } else {
-      setPlaying(true);
-    }
+    setState("loading");
+    el.src = feed.streamUrl;
+    el.play().catch(() => setState("error"));
   };
 
   return (
@@ -103,12 +63,23 @@ export function AudioPlayer({ feed, onClose }: Props) {
         <div className="flex items-center gap-3 md:gap-5">
           <button
             onClick={toggle}
+            disabled={state === "error"}
             className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white shrink-0 transition-all shadow-lg ${
-              playing ? "bg-red-500 hover:bg-red-600 animate-pulse-dot" : "bg-primary hover:bg-primary-dark"
+              state === "playing"
+                ? "bg-red-500 hover:bg-red-600 animate-pulse-dot"
+                : state === "error"
+                ? "bg-red-500/60 cursor-not-allowed"
+                : "bg-primary hover:bg-primary-dark"
             }`}
-            aria-label={playing ? "Stop" : "Play"}
+            aria-label={state === "playing" ? "Stop" : "Play"}
           >
-            {playing ? <Square className="w-5 h-5" /> : <Play className="w-6 h-6 ml-0.5" />}
+            {state === "loading" ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : state === "playing" ? (
+              <Square className="w-5 h-5" />
+            ) : (
+              <Play className="w-6 h-6 ml-0.5" />
+            )}
           </button>
 
           <div className="flex-1 min-w-0">
@@ -116,18 +87,22 @@ export function AudioPlayer({ feed, onClose }: Props) {
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${catStyle.bg} ${catStyle.text} uppercase tracking-wider`}>
                 {catStyle.label}
               </span>
-              {feed.streamUrl && (
-                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
-                  <Zap className="w-3 h-3" /> DIRECT
-                </span>
-              )}
-              {playing ? (
+              {state === "playing" && (
                 <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                   LIVE · ON AIR
                 </span>
-              ) : (
+              )}
+              {state === "loading" && (
+                <span className="text-[10px] font-bold text-amber-400">Connecting…</span>
+              )}
+              {state === "idle" && (
                 <span className="text-[10px] text-muted">Click play to start streaming</span>
+              )}
+              {state === "error" && (
+                <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
+                  <AlertCircle className="w-3 h-3" /> Feed offline — try another
+                </span>
               )}
             </div>
             <p className="text-sm md:text-base font-bold text-foreground truncate">{feed.name}</p>
@@ -144,20 +119,8 @@ export function AudioPlayer({ feed, onClose }: Props) {
             </div>
           </div>
 
-          <a
-            href={getBroadcastifyUrl(feed)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-1.5 text-xs text-muted hover:text-primary transition-colors px-3 py-2 rounded-lg hover:bg-card"
-            title="Open full page"
-          >
-            <Radio className="w-4 h-4" />
-            <span>Details</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-
           <button
-            onClick={() => { stopAll(); onClose(); }}
+            onClick={() => { if (audioRef.current) audioRef.current.pause(); onClose(); }}
             className="w-9 h-9 rounded-lg flex items-center justify-center text-muted hover:text-foreground hover:bg-card transition-colors"
             aria-label="Close player"
           >
@@ -165,50 +128,15 @@ export function AudioPlayer({ feed, onClose }: Props) {
           </button>
         </div>
 
-        {/* Native HTML5 audio — hidden controls, played via main play button */}
         <audio
           ref={audioRef}
           preload="none"
-          onError={() => { setMode("iframe"); setError(null); }}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
           crossOrigin="anonymous"
+          onPlaying={() => setState("playing")}
+          onWaiting={() => setState("loading")}
+          onPause={() => setState((s) => (s === "playing" ? "idle" : s))}
+          onError={() => setState("error")}
         />
-
-        {/* Iframe fallback when native not available or failed */}
-        {playing && mode === "iframe" && (
-          <div className="mt-3 rounded-xl overflow-hidden border border-border bg-black/40">
-            <iframe
-              src={embedUrl}
-              title={`${feed.name} live scanner`}
-              className="w-full block"
-              style={{ height: "120px", border: 0 }}
-              allow="autoplay; encrypted-media"
-              onError={() => setMode("popup")}
-            />
-          </div>
-        )}
-
-        {/* Popup fallback when iframe blocked */}
-        {playing && mode === "popup" && (
-          <div className="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
-            <div className="flex-1 text-sm">
-              <p className="font-semibold text-foreground">Audio blocked in this frame</p>
-              <p className="text-xs text-muted">Click below to open the live stream in a small popup window.</p>
-            </div>
-            <button
-              onClick={openInPopup}
-              className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition-colors"
-            >
-              Open Player
-            </button>
-          </div>
-        )}
-
-        {error && (
-          <div className="mt-2 text-xs text-red-400 text-center">{error}</div>
-        )}
       </div>
     </div>
   );
