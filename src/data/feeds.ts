@@ -34,7 +34,7 @@ export const feeds: Feed[] = [
   { id: "tx-houston", name: "Houston Police", state: "TX", stateName: "Texas", city: "Houston", category: "police", description: "Houston Police Department dispatch", listeners: 1400, broadcastifyId: "5841" },
   { id: "tx-dallas", name: "Dallas Police & Fire", state: "TX", stateName: "Texas", city: "Dallas", category: "mixed", description: "Dallas PD and Fire dispatch", listeners: 980, broadcastifyId: "1036" },
   { id: "tx-austin", name: "Austin Public Safety", state: "TX", stateName: "Texas", city: "Austin", category: "mixed", description: "Austin police, fire, and EMS", listeners: 810, broadcastifyId: "14931" },
-  { id: "tx-san-antonio", name: "San Antonio Police", state: "TX", stateName: "Texas", city: "San Antonio", category: "police", description: "San Antonio Police Department", listeners: 650, broadcastifyId: "3691" },
+  { id: "tx-san-antonio", name: "San Antonio Police", state: "TX", stateName: "Texas", city: "San Antonio", category: "police", description: "San Antonio Police Department", listeners: 650, broadcastifyId: "3691", streamUrl: "https://broadcastify.cdnstream1.com/3691" },
 
   // Florida
   { id: "fl-miami", name: "Miami-Dade Police", state: "FL", stateName: "Florida", city: "Miami", category: "police", description: "Miami-Dade Police Department", listeners: 1250, broadcastifyId: "14559" },
@@ -43,7 +43,7 @@ export const feeds: Feed[] = [
   { id: "fl-jacksonville", name: "Jacksonville Sheriff", state: "FL", stateName: "Florida", city: "Jacksonville", category: "police", description: "Jacksonville Sheriff's Office", listeners: 430, broadcastifyId: "17194" },
 
   // Illinois
-  { id: "il-chicago-pd", name: "Chicago Police", state: "IL", stateName: "Illinois", city: "Chicago", category: "police", description: "Chicago Police Department Zone 1-4", listeners: 2400, broadcastifyId: "32253" },
+  { id: "il-chicago-pd", name: "Chicago Police", state: "IL", stateName: "Illinois", city: "Chicago", category: "police", description: "Chicago Police Department Zone 1-4", listeners: 2400, broadcastifyId: "32253", streamUrl: "https://broadcastify.cdnstream1.com/32253" },
   { id: "il-chicago-fire", name: "Chicago Fire", state: "IL", stateName: "Illinois", city: "Chicago", category: "fire", description: "Chicago Fire Department", listeners: 980, broadcastifyId: "14531" },
 
   // Arizona
@@ -56,7 +56,7 @@ export const feeds: Feed[] = [
 
   // Pennsylvania
   { id: "pa-philly", name: "Philadelphia Police", state: "PA", stateName: "Pennsylvania", city: "Philadelphia", category: "police", description: "Philadelphia Police Department", listeners: 1120, broadcastifyId: "15306" },
-  { id: "pa-pittsburgh", name: "Pittsburgh Police & Fire", state: "PA", stateName: "Pennsylvania", city: "Pittsburgh", category: "mixed", description: "Pittsburgh area public safety", listeners: 580, broadcastifyId: "17057" },
+  { id: "pa-pittsburgh", name: "Pittsburgh Police & Fire", state: "PA", stateName: "Pennsylvania", city: "Pittsburgh", category: "mixed", description: "Pittsburgh area public safety", listeners: 580, broadcastifyId: "17057", streamUrl: "https://broadcastify.cdnstream1.com/17057" },
 
   // Georgia
   { id: "ga-atlanta", name: "Atlanta Police", state: "GA", stateName: "Georgia", city: "Atlanta", category: "police", description: "Atlanta Police Department", listeners: 890, broadcastifyId: "22537" },
@@ -73,7 +73,7 @@ export const feeds: Feed[] = [
   { id: "oh-cleveland", name: "Cleveland Police & Fire", state: "OH", stateName: "Ohio", city: "Cleveland", category: "mixed", description: "Cleveland area public safety", listeners: 490, broadcastifyId: "14969" },
 
   // Colorado
-  { id: "co-denver", name: "Denver Police", state: "CO", stateName: "Colorado", city: "Denver", category: "police", description: "Denver Police Department", listeners: 710, broadcastifyId: "22562" },
+  { id: "co-denver", name: "Denver Police", state: "CO", stateName: "Colorado", city: "Denver", category: "police", description: "Denver Police Department", listeners: 710, broadcastifyId: "22562", streamUrl: "https://broadcastify.cdnstream1.com/22562" },
 
   // Nevada
   { id: "nv-las-vegas", name: "Las Vegas Metro Police", state: "NV", stateName: "Nevada", city: "Las Vegas", category: "police", description: "Las Vegas Metropolitan Police", listeners: 960, broadcastifyId: "15127" },
@@ -89,7 +89,7 @@ export const feeds: Feed[] = [
 
   // Missouri
   { id: "mo-stl", name: "St. Louis Police & Fire", state: "MO", stateName: "Missouri", city: "St. Louis", category: "mixed", description: "St. Louis area public safety", listeners: 450, broadcastifyId: "10996" },
-  { id: "mo-kc", name: "Kansas City Police", state: "MO", stateName: "Missouri", city: "Kansas City", category: "police", description: "Kansas City Missouri Police", listeners: 390, broadcastifyId: "25324" },
+  { id: "mo-kc", name: "Kansas City Police", state: "MO", stateName: "Missouri", city: "Kansas City", category: "police", description: "Kansas City Missouri Police", listeners: 390, broadcastifyId: "25324", streamUrl: "https://broadcastify.cdnstream1.com/25324" },
 
   // Tennessee
   { id: "tn-nashville", name: "Nashville Police", state: "TN", stateName: "Tennessee", city: "Nashville", category: "police", description: "Metro Nashville Police", listeners: 510, broadcastifyId: "15370" },
@@ -124,6 +124,25 @@ export const feeds: Feed[] = [
 
   // Connecticut
   { id: "ct-hartford", name: "Hartford Police", state: "CT", stateName: "Connecticut", city: "Hartford", category: "police", description: "Hartford Police Department", listeners: 280, broadcastifyId: "1100" },
+  { id: "ct-new-haven", name: "New Haven Police", state: "CT", stateName: "Connecticut", city: "New Haven", category: "police", description: "Greater New Haven Police Department", listeners: 190, broadcastifyId: "8705", streamUrl: "https://broadcastify.cdnstream1.com/8705" },
+
+  // Virginia (Fairfax — flagship direct stream)
+  { id: "va-fairfax", name: "Fairfax County Public Safety", state: "VA", stateName: "Virginia", city: "Fairfax", category: "mixed", description: "Fairfax County Police, Fire, and EMS", listeners: 1350, broadcastifyId: "28326", streamUrl: "https://broadcastify.cdnstream1.com/28326" },
+
+  // Arizona (Tucson direct)
+  { id: "az-tucson", name: "Tucson Police Dispatch", state: "AZ", stateName: "Arizona", city: "Tucson", category: "police", description: "Tucson Police Department dispatch", listeners: 460, broadcastifyId: "22835", streamUrl: "https://broadcastify.cdnstream1.com/22835" },
+
+  // New York (Jefferson County direct)
+  { id: "ny-jefferson", name: "Jefferson County Safety", state: "NY", stateName: "New York", city: "Watertown", category: "mixed", description: "Jefferson County NY Police, Fire, and EMS", listeners: 210, broadcastifyId: "6007", streamUrl: "https://broadcastify.cdnstream1.com/6007" },
+
+  // Washington (Chelan/Douglas direct)
+  { id: "wa-chelan", name: "Chelan/Douglas Dispatch", state: "WA", stateName: "Washington", city: "Wenatchee", category: "mixed", description: "Rivercom Chelan/Douglas County Dispatch", listeners: 180, broadcastifyId: "24557", streamUrl: "https://broadcastify.cdnstream1.com/24557" },
+
+  // Indiana (Madison County direct)
+  { id: "in-madison", name: "Madison County Public Safety", state: "IN", stateName: "Indiana", city: "Anderson", category: "mixed", description: "Madison County Sheriff, Fire, EMS, Anderson Police", listeners: 220, broadcastifyId: "24550", streamUrl: "https://broadcastify.cdnstream1.com/24550" },
+
+  // Oregon (Tillamook direct)
+  { id: "or-tillamook", name: "Tillamook County Safety", state: "OR", stateName: "Oregon", city: "Tillamook", category: "mixed", description: "Tillamook County Police and EMS", listeners: 150, broadcastifyId: "16984", streamUrl: "https://broadcastify.cdnstream1.com/16984" },
 ];
 
 // Helper: stream URL (Broadcastify public listen embed)
