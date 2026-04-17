@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       <h2 className="text-xl font-semibold text-foreground mt-8">Third-Party Services</h2>
       <p>Audio feeds are provided by Broadcastify and other public community-run scanner networks. Their privacy policies apply to data they collect when you stream audio. We are not affiliated with any law enforcement agency or feed operator.</p>
       <h2 className="text-xl font-semibold text-foreground mt-8">Contact</h2>
-      <p>Questions? Contact us at <a href="mailto:privacy@scannerradio.live" className="text-primary hover:underline">privacy@scannerradio.live</a>.</p>
+      <p>Questions? Contact us at <a href="mailto:privacy@policeradioscanner.app" className="text-primary hover:underline">privacy@policeradioscanner.app</a>.</p>
     </div>
   </main><Footer /></>);
 }

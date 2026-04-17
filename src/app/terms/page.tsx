@@ -7,7 +7,7 @@ export default function TermsPage() {
     <h1 className="text-3xl font-bold text-foreground mb-8">Terms of Service</h1>
     <div className="prose prose-sm max-w-none text-muted leading-relaxed space-y-6">
       <p><strong>Effective Date:</strong> April 2026</p>
-      <p>By using Free Scanner Radio at scannerradio.live, you agree to these terms.</p>
+      <p>By using Free Scanner Radio at policeradioscanner.app, you agree to these terms.</p>
       <h2 className="text-xl font-semibold text-foreground mt-8">Service</h2>
       <p>Free Scanner Radio is a directory and player for publicly broadcast unencrypted police, fire, and EMS radio communications in the United States. Audio streams are provided by third-party community operators (primarily Broadcastify). We do not operate, own, or control the audio content.</p>
       <h2 className="text-xl font-semibold text-foreground mt-8">Legal Listening</h2>
@@ -19,7 +19,7 @@ export default function TermsPage() {
       <h2 className="text-xl font-semibold text-foreground mt-8">Disclaimer</h2>
       <p>The service is provided &quot;as is&quot; without warranties. Feeds may be unavailable at any time. We are not liable for any damages from use of or reliance on the service.</p>
       <h2 className="text-xl font-semibold text-foreground mt-8">Contact</h2>
-      <p>Questions? Contact us at <a href="mailto:legal@scannerradio.live" className="text-primary hover:underline">legal@scannerradio.live</a>.</p>
+      <p>Questions? Contact us at <a href="mailto:legal@policeradioscanner.app" className="text-primary hover:underline">legal@policeradioscanner.app</a>.</p>
     </div>
   </main><Footer /></>);
 }
